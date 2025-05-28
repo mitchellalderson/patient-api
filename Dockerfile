@@ -41,6 +41,7 @@ COPY prisma/schema.prisma ./prisma/
 # Copy built app from build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build /app/generated ./generated
 
 # Expose the port the app runs on
 EXPOSE 3000
