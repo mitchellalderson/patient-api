@@ -1,7 +1,7 @@
-import { errorHandler } from './middleware/errorHandler';
 import logger from 'morgan'
 import express from 'express';
 import routes from "./routes";
+import {errorMiddleware} from "./middleware/error.middleware";
 
 const app = express();
 
@@ -15,6 +15,6 @@ app.use('/', (req, res) => {
 });
 
 // Global error handler
-app.use(errorHandler);
+app.use(errorMiddleware);
 
 export default app;

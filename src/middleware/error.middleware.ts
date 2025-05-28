@@ -8,28 +8,31 @@ export const errorMiddleware = (
   next: NextFunction
 ) => {
   if (error instanceof NotFoundError) {
-    return res.status(404).json({ 
+    res.status(404).json({
       status: 'error',
       message: error.message 
     });
+    return;
   }
 
   if (error instanceof ValidationError) {
-    return res.status(400).json({ 
+    res.status(400).json({
       status: 'error',
       message: error.message 
     });
+    return;
   }
 
   if (error instanceof AuthorizationError) {
-    return res.status(403).json({ 
+    res.status(403).json({
       status: 'error',
       message: error.message 
     });
+    return;
   }
 
   console.error(error);
-  return res.status(500).json({ 
+   res.status(500).json({
     status: 'error',
     message: 'Internal server error' 
   });

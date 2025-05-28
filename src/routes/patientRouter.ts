@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from "express";
-import {ValidationError} from "../utils/errors";
+import {AuthorizationError, ValidationError} from "../utils/errors";
 import {UserService} from "../services/user.service";
 import {PatientService} from "../services/patient.service";
 
@@ -30,7 +30,7 @@ const getAllPatients = async (req: Request, res: Response, next: NextFunction) =
 
         // check if user is admin or billing
         if (user.role !== 'ADMIN' && user.role !== "BILLING") {
-            throw new ValidationError('User is not authorized to access this resource');
+            throw new AuthorizationError('User is not authorized to access this resource');
         }
 
         const patients = await patientService.getAllPatients();
@@ -47,7 +47,7 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
 
         // check if user is admin or billing
         if (user.role !== 'ADMIN' && user.role !== "BILLING") {
-            throw new ValidationError('User is not authorized to access this resource');
+            throw new AuthorizationError('User is not authorized to access this resource');
         }
 
         const id = Number(req.params.id);
