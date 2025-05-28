@@ -42,10 +42,13 @@ COPY prisma/schema.prisma ./prisma/
 # Copy built app from build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /app/generated ./generated
+COPY --from=build /app/generated ./dist/generated
 
 # Expose the port the app runs on
 EXPOSE 3000
 
+  RUN echo "Contents of /app/dist in production stage:" && ls -R /app/dist
+
+
 # Start the application
-CMD ["node", "dist/server.js"]
+CMD ["node", "dist/src/server.js"]
