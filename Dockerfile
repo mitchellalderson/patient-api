@@ -43,6 +43,8 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=build /app/generated ./generated
 
+RUN npm run db:migrate
+
 # Expose the port the app runs on
 EXPOSE 3000
 
