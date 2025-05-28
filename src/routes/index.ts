@@ -1,18 +1,8 @@
 import { Router } from 'express';
-import {UserService} from "../services/user.service";
-import {UserController} from "../controllers/user.controller";
-import {PatientService} from "../services/patient.service";
-import {PatientController} from "../controllers/patient.controller";
+import patientRouter from "./patientRouter";
 
 const router = Router();
 
-const userService = new UserService();
-const userController = new UserController(userService);
-
-const patientService = new PatientService();
-const patientController = new PatientController(patientService);
-
-router.use('/', userController.router);
-router.use('/', patientController.router);
+router.use('/', patientRouter);
 
 export default router;

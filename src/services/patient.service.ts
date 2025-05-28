@@ -73,33 +73,4 @@ export class PatientService {
       data: patientSanitized
     });
   }
-
-  public async updatePatient(id: number, patientData: Partial<Omit<Patient, 'id'>>): Promise<Patient> {
-    const patient = await this.prisma.patient.findUnique({
-      where: { id }
-    });
-
-    if (!patient) {
-      throw new NotFoundError(`Patient with id ${id} not found`);
-    }
-
-    return this.prisma.patient.update({
-      where: { id },
-      data: patientData
-    });
-  }
-
-  public async deletePatient(id: number): Promise<void> {
-    const patient = await this.prisma.patient.findUnique({
-      where: { id }
-    });
-
-    if (!patient) {
-      throw new NotFoundError(`Patient with id ${id} not found`);
-    }
-
-    await this.prisma.patient.delete({
-      where: { id }
-    });
-  }
 }
