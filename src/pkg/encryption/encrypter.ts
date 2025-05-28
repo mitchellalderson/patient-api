@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 
-interface EncryptionOptions {
+export interface EncryptionOptions {
   secretKey: string;
   ivLength: number;
   algorithm: string;

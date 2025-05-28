@@ -1,11 +1,18 @@
-import { PrismaClient, User, UserRole } from '../../generated/prisma';
+import { PrismaClient, User } from '../../generated/prisma';
 import { NotFoundError } from '../utils/errors';
+import * as crypto from 'crypto';
 
 export class UserService {
   private prisma: PrismaClient;
 
   constructor() {
     this.prisma = new PrismaClient();
+  }
+
+
+  public async checkPasswordHash(password: string, hash: string): Promise<boolean> {
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    return hashedPassword === hash;
   }
 
   public async getAllUsers(): Promise<User[]> {
@@ -15,7 +22,6 @@ export class UserService {
   public async getUserById(id: number): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include: { patients: true }
     });
 
     if (!user) {
@@ -26,8 +32,14 @@ export class UserService {
   }
 
   public async createUser(userData: Omit<User, 'id'>): Promise<User> {
+
+    // Hash the password before saving it to the database
+    const hashedPassword = crypto.createHash('sha256').update(userData.password).digest('hex');
     return this.prisma.user.create({
-      data: userData
+      data: {
+        ...userData,
+        password: hashedPassword
+      }
     });
   }
 
