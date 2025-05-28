@@ -10,6 +10,9 @@ app.use(logger('dev'));
 
 // Routes
 app.use('/api/', routes);
+app.use('/', (req, res) => {
+        res.status(200).json({status: 'ok'});
+});
 
 // Global error handler
 app.use(errorHandler);
