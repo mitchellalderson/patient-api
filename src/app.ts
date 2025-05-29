@@ -1,12 +1,12 @@
-import logger from 'morgan'
 import express from 'express';
 import routes from "./routes";
 import {errorMiddleware} from "./middleware/error.middleware";
+import { morganMiddleware } from "./pkg/logger/logger"
 
 const app = express();
 
 app.use(express.json());
-app.use(logger('dev'));
+app.use(morganMiddleware);
 
 // Routes
 app.use('/api/', routes);

@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from "express";
 import {AuthorizationError, ValidationError} from "../utils/errors";
 import {UserService} from "../services/user.service";
 import {PatientService} from "../services/patient.service";
-
+import {logger} from "../pkg/logger/logger";
 
 const userService = new UserService();
 const patientService = new PatientService();
@@ -15,6 +15,7 @@ const getUser = async (req: Request) => {
     // get user id from header
     const userId = req.header('user-id');
     if (!userId) {
+        logger.error('User ID header is missing');
         throw new ValidationError('User ID header is missing');
     }
     const userInt = parseInt(userId);
@@ -24,16 +25,19 @@ const getUser = async (req: Request) => {
 
 const getAllPatients = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-
         const user = await getUser(req)
 
         // check if user is admin or billing
-        if (user.role !== 'ADMIN' && user.role !== "BILLING") {
+        if (user.role !== 'ADMIN') {
+            logger.error('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
             throw new AuthorizationError('User is not authorized to access this resource');
         }
 
         const patients = await patientService.getAllPatients();
+
+        // log request to all patients endpoint, including user id and role for auditing purposes
+        logger.info('Successfully retrieved all patients', { userId: user.id, userRole: user.role });
+
         res.json(patients);
     } catch (error) {
         next(error);
@@ -47,6 +51,7 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
 
         // check if user is admin or billing
         if (user.role !== 'ADMIN' && user.role !== "BILLING") {
+            logger.error('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
             throw new AuthorizationError('User is not authorized to access this resource');
         }
 
@@ -56,6 +61,10 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
         }
 
         const patient = await patientService.getPatientById(id);
+
+        // log request to get patient by id endpoint, including user id and role for auditing purposes
+        logger.info('Successfully retrieved patient', { userId: user.id, userRole: user.role });
+
         res.json(patient);
     } catch (error) {
         next(error);
