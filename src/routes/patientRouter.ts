@@ -63,7 +63,7 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
         const patient = await patientService.getPatientById(id);
 
         // log request to get patient by id endpoint, including user id and role for auditing purposes
-        logger.info('Successfully retrieved patient', { userId: user.id, userRole: user.role });
+        logger.info('Successfully retrieved patient', { userId: user.id, userRole: user.role, patientId: id });
 
         res.json(patient);
     } catch (error) {
