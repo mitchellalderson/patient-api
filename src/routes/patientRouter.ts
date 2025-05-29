@@ -15,7 +15,7 @@ const getUser = async (req: Request) => {
     // get user id from header
     const userId = req.header('user-id');
     if (!userId) {
-        logger.error('User ID header is missing');
+        logger.warn('User ID header is missing');
         throw new ValidationError('User ID header is missing');
     }
     const userInt = parseInt(userId);
@@ -29,7 +29,7 @@ const getAllPatients = async (req: Request, res: Response, next: NextFunction) =
 
         // check if user is admin or billing
         if (user.role !== 'ADMIN') {
-            logger.error('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
+            logger.warn('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
             throw new AuthorizationError('User is not authorized to access this resource');
         }
 
@@ -51,7 +51,7 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
 
         // check if user is admin or billing
         if (user.role !== 'ADMIN' && user.role !== "BILLING") {
-            logger.error('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
+            logger.warn('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
             throw new AuthorizationError('User is not authorized to access this resource');
         }
 
@@ -73,8 +73,20 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
 
 const createPatient = async (req: Request, res: Response, next: NextFunction) => {
     try {
+
+        const user = await getUser(req)
+
+        // check if user is admin or billing
+        if (user.role !== 'ADMIN' && user.role !== "BILLING") {
+            logger.warn('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
+            throw new AuthorizationError('User is not authorized to access this resource');
+        }
+
         const patientData = req.body;
         const newPatient = await patientService.createPatient(patientData);
+
+        logger.info('Successfully created patient', { userId: user.id, userRole: user.role });
+
         res.status(201).json(newPatient);
     } catch (error) {
         next(error);
