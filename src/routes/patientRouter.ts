@@ -37,8 +37,17 @@ const getAllPatients = async (req: Request, res: Response, next: NextFunction) =
 
         // log request to all patients endpoint, including user id and role for auditing purposes
         logger.info('Successfully retrieved all patients', { userId: user.id, userRole: user.role });
+        
+        const patientsSanitized = patients.map(patient => {
+            return {
+                id: patient.id,
+                firstName: patient.firstName,
+                lastName: patient.lastName,
+                ssn: patient.ssn,
+            }
+        })
 
-        res.json(patients);
+        res.json(patientsSanitized);
     } catch (error) {
         next(error);
     }
@@ -65,7 +74,14 @@ const getPatientById = async (req: Request, res: Response, next: NextFunction) =
         // log request to get patient by id endpoint, including user id and role for auditing purposes
         logger.info('Successfully retrieved patient', { userId: user.id, userRole: user.role, patientId: id });
 
-        res.json(patient);
+        const patientSanitized =  {
+                id: patient.id,
+                firstName: patient.firstName,
+                lastName: patient.lastName,
+                ssn: patient.ssn,
+        }
+
+        res.json(patientSanitized);
     } catch (error) {
         next(error);
     }
