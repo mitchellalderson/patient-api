@@ -123,10 +123,10 @@ The API is accessible at `/api/` and includes the following endpoints:
 - POST `api/patients`: create a new patient with the following data payload:
     ```json
     {
-	""firstName": "test first 2",
-	""lastName": "test Last 2",
-	""dob": "2022-09-27",
-	""ssn": "666-66-7777"
+	"firstName": "test first 2",
+	"lastName": "test Last 2",
+	"dob": "2022-09-27",
+	"ssn": "666-66-7777"
     }
   ```
   
