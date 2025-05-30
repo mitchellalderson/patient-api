@@ -17,6 +17,9 @@ COPY . .
 # Migrate database
 RUN DATABASE_URL=${DATABASE_URL} npm run db:migrate
 
+# Seed Database
+RUN DATABASE_URL=${DATABASE_URL} npm run db:seed
+
 # Build the TypeScript code
 RUN npm run build
 
