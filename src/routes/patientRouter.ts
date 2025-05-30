@@ -27,7 +27,7 @@ const getAllPatients = async (req: Request, res: Response, next: NextFunction) =
     try {
         const user = await getUser(req)
 
-        // check if user is admin or billing
+        // check if user is admin
         if (user.role !== 'ADMIN') {
             logger.warn('User is not authorized to access this resource', { userId: user.id, userRole: user.role });
             throw new AuthorizationError('User is not authorized to access this resource');

@@ -1,6 +1,7 @@
 # ---- Build Stage ----
 FROM node:22.16-alpine AS build
 
+ARG DATABASE_URL
 # Set working directory
 WORKDIR /app
 
@@ -13,8 +14,8 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Generate Prisma client
-RUN npm run db:gen
+# Migrate database
+RUN DATABASE_URL=${DATABASE_URL} npm run db:migrate
 
 # Build the TypeScript code
 RUN npm run build

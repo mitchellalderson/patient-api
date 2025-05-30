@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: patient-api
+    runtime: docker
+    repo: https://github.com/mitchellalderson/patient-api
+    plan: starter
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+    region: ohio
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    autoDeployTrigger: commit
+version: "1"
+
+databases:
+  - name: patient_database
+    databaseName: patient_database_4ilz
+    user: patient_database_4ilz_user
+    plan: basic-256mb
+    region: ohio
+    ipAllowList: []
+    postgresMajorVersion: "16"
+    diskSizeGB: 15
+version: "1"
