@@ -119,7 +119,7 @@ Database seeding is implemented via Prisma's seed functionality (see `prisma/see
 The API is accessible at `/api/` and includes the following endpoints:
 
 - GET `api/patients`: get all patients (with encrypted SSN's)
-- GET `api/patients/<patientId`: get single patient by id (with SSN decrypted)
+- GET `api/patients/<patientId>`: get single patient by id (with SSN decrypted)
 - POST `api/patients`: create a new patient with the following data payload:
     ```json
     {
