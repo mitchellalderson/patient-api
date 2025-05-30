@@ -10,6 +10,8 @@ app.use(morganMiddleware);
 
 // Routes
 app.use('/api/', routes);
+
+// health check endpoint
 app.use('/', (req, res) => {
         res.status(200).json({status: 'ok'});
 });
