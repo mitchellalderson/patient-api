@@ -8,7 +8,9 @@ terraform {
 }
 
 provider "render" {
-  api_key = "" # RENDER_API_KEY env
+
+  ## WARNING! do not commit your Render API Key!
+  api_key = "" # can also be set with RENDER_API_KEY envvar
   owner_id = ""
 }
 

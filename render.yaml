@@ -6,7 +6,9 @@ services:
     plan: starter
     envVars:
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: patient_database
+          property: connectionString
     region: ohio
     dockerContext: .
     dockerfilePath: ./Dockerfile
