@@ -13,8 +13,6 @@ services:
     dockerContext: .
     dockerfilePath: ./Dockerfile
     autoDeployTrigger: commit
-version: "1"
-
 databases:
   - name: patient_database
     databaseName: patient_database_4ilz
